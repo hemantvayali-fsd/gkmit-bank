@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('../partials/head') %>
+    <link rel="stylesheet" href="/css/form.css" />
+  </head>
+
+  <body
+    class="flex flex--vcenter flex--hcenter"
+    style="min-height: 100vh"
+  >
+    <% if(errorMessage && errorMessage.length) { %>
+    <div class="flash flash--error"><%= errorMessage %></div>
+    <% } %>
+    <div class="cotainer signup-container">
+      <form action="/login" method="POST" class="form" id="userLoginForm">
+        <h2>Login</h2>
+        <div class="form-control">
+          <input type="text" name="email" id="email" placeholder="Email" />
+        </div>
+        <div class="form-control">
+          <input
+            type="password"
+            name="password"
+            id="password"
+            placeholder="Password"
+          />
+        </div>
+        <button class="mx-auto" type="submit">Login</button>
+      </form>
+    </div>
+  </body>
+</html>

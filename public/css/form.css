@@ -1,0 +1,51 @@
+.form {
+  padding: 30px 40px;
+}
+
+.form h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.form-control {
+  margin-bottom: 8px;
+  padding-bottom: 10px;
+  position: relative;
+  height: auto;
+  border: none;
+}
+
+.form-control label {
+  display: block;
+  color: #777;
+  margin-bottom: 5px;
+}
+
+.form-control input {
+  display: block;
+  width: 100%;
+  padding: 5px 10px;
+  border: 2px solid #f0f0f0;
+  border-radius: 4px;
+}
+
+.form-control input:focus {
+  outline: 0;
+  border-color: #777;
+}
+
+.form-control.error input {
+  border-color: #e74c3c;
+}
+
+.form button {
+  cursor: pointer;
+  background-color: #3498db;
+  border: 2px solid #3498db;
+  border-radius: 4px;
+  color: white;
+  display: block;
+  padding: 10px;
+  margin-top: 20px;
+  width: 100%;
+}

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('../partials/head') %>
+  </head>
+
+  <body class="mb-5">
+    <%- include('./partial-navigation') %>
+
+    <div id="errorBlock" class="flash flash--error" style="display: none">
+      Error
+    </div>
+
+    <div class="cotainer">
+      <div class="jumbotron my-0" style="position: relative">
+        <h1>User Transactions | <%= user.fullName %></h1>
+        <div
+          class="flex flex--vcenter flex-row mt-5"
+          style="position: absolute; right: 0; bottom: 10px"
+        >
+          <div class="mx-2">
+            <label for="startDate" class="mr-1">From: </label>
+            <input type="date" name="fromDate" id="fromDate" />
+          </div>
+          <div class="mx-2">
+            <label for="toDate" class="mr-1">To: </label>
+            <input type="date" name="toDate" id="toDate" />
+          </div>
+          <button class="btn btn-danger mx-2" id="filterBtn">
+            <i class="fa fa-filter" aria-hidden="true"></i>
+            Filter
+          </button>
+          <button class="btn btn-success mx-2" id="downloadBtn">
+            <i class="fa fa-download" aria-hidden="true"></i>
+            Download
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="card mt-5 py-0" style="position: relative">
+      <div class="loader-container">
+        <div class="loader">Loading...</div>
+      </div>
+      <table class="table table-hover" id="userListTable">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Amount</th>
+            <th scope="col">Type</th>
+            <th scope="col">Date</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <!-- <section class="pagination">
+        <a href="/?page=1">1</a>
+        <a href="/?page=2">2</a>
+      </section> -->
+    </div>
+    <!-- JQuery, Popper, Bootstrap -->
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+      integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+      integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- Custom JS -->
+    <script src="/js/script.js"></script>
+    <script>
+      function fetchData(filterOptions = {}) {
+        $(".loader-container").show();
+        const params = [];
+        const baseUrl = "/admin/users/<%= user._id %>/transactions";
+        const { fromDate, toDate } = filterOptions;
+        if (fromDate) {
+          params.push("fromDate=" + fromDate);
+        }
+        if (toDate) {
+          params.push("toDate=" + toDate);
+        }
+        const url = baseUrl + "?" + params.join("&");
+        fetch(url)
+          .then((response) => {
+            if (!response.ok) throw new Error("Something went wrong");
+            return response.json();
+          })
+          .then((response) => {
+            $("table tbody").empty();
+            response.transactions.map((item, index) => {
+              const amount = item.amount.toFixed(2);
+              const type = item.type === "deposit" ? "Credit" : "Debit";
+              const className =
+                item.type === "deposit" ? "text-success" : "text-danger";
+              const date = new Date(item.createdAt).toLocaleString("en-GB", {
+                hour12: true,
+              });
+              const markup = `<tr><td>${
+                index + 1
+              }</td><td>${amount}</td><td class=${className}>${type}</td><td>${date}</td></tr>`;
+              $("table tbody").append(markup);
+            });
+            $(".loader-container").hide();
+          })
+          .catch((error) => {
+            console.log(error);
+            $(".loader-container").hide();
+          });
+      }
+
+      // load latest transactions when page loads first time
+      jQuery("document").ready(function () {
+        fetchData();
+      });
+    </script>
+
+    <!-- Date validators -->
+    <script>
+      let timer;
+      const filterBtn = document.getElementById("filterBtn");
+      const downloadBtn = document.getElementById("downloadBtn");
+      const fromDateElement = document.getElementById("fromDate");
+      const toDateElement = document.getElementById("toDate");
+      const errorBlockElement = document.getElementById("errorBlock");
+
+      // click listener for filter button
+      filterBtn.addEventListener("click", function (e) {
+        const fromDate = fromDateElement.value;
+        const toDate = toDateElement.value || formatDate(new Date());
+        const currentDate = formatDate(new Date());
+        if (fromDate > toDate) {
+          $("#errorBlock")
+            .text("FROM date must be smaller than TO date")
+            .show();
+          timer = setTimeout(function () {
+            $("#errorBlock").text("").hide();
+          }, 4000);
+          return;
+        }
+        if (toDate > currentDate) {
+          $("#errorBlock")
+            .text("Invalid TO date. Must be smaller than or equal to today")
+            .show();
+          timer = setTimeout(function () {
+            $("#errorBlock").text("").hide();
+          }, 4000);
+          return;
+        }
+        fetchData({ fromDate, toDate });
+      });
+
+      // registering click listener for download button
+      downloadBtn.addEventListener("click", function (e) {
+        const fromDate = fromDateElement.value;
+        const toDate = toDateElement.value || formatDate(new Date());
+        const currentDate = formatDate(new Date());
+        if (fromDate > toDate) {
+          $("#errorBlock")
+            .text("FROM date must be smaller than TO date")
+            .show();
+          timer = setTimeout(function () {
+            $("#errorBlock").text("").hide();
+          }, 4000);
+          return;
+        }
+        if (toDate > currentDate) {
+          $("#errorBlock")
+            .text("Invalid TO date. Must be smaller than or equal to today")
+            .show();
+          timer = setTimeout(function () {
+            $("#errorBlock").text("").hide();
+          }, 4000);
+          return;
+        }
+        const params = [];
+        const baseUrl = "/admin/users/<%= user._id %>/transactions/download";
+        if (fromDate) {
+          params.push("fromDate=" + fromDate);
+        }
+        if (toDate) {
+          params.push("toDate=" + toDate);
+        }
+        const url = params.length ? `${baseUrl}?${params.join("&")}` : baseUrl;
+        window.open(url);
+      });
+    </script>
+  </body>
+</html>

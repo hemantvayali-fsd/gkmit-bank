@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('../partials/head') %>
+    <link rel="stylesheet" href="/css/form.css" />
+  </head>
+
+  <body class="flex flex--vcenter flex--hcenter" style="min-height: 100vh">
+    <% if(errorMessage && errorMessage.length) { %>
+    <div class="flash flash--error"><%= errorMessage %></div>
+    <% } %>
+    <div class="cotainer signup-container">
+      <form
+        action="/admin/signup"
+        method="POST"
+        class="form"
+        id="userSingupForm"
+      >
+        <h2>Register</h2>
+        <div class="form-control">
+          <input
+            type="text"
+            name="firstName"
+            id="firstName"
+            placeholder="First Name"
+          />
+        </div>
+        <div class="form-control">
+          <input
+            type="text"
+            name="lastName"
+            id="lastName"
+            placeholder="Last Name"
+          />
+        </div>
+        <div class="form-control">
+          <input type="email" name="email" id="email" placeholder="Email" />
+        </div>
+        <div class="form-control">
+          <input
+            type="text"
+            name="contactNumber"
+            id="contactNumber"
+            placeholder="Contact Number"
+          />
+        </div>
+        <div class="form-control">
+          <select id="employeeRole" class="form-control" name="role" required>
+            <option selected disabled>Select role</option>
+            <option value="admin">Admin</option>
+            <option value="manager">Manager</option>
+            <option value="teller">Teller</option>
+          </select>
+        </div>
+        <div class="form-control">
+          <input
+            type="password"
+            name="password"
+            id="password"
+            placeholder="Password"
+          />
+        </div>
+        <div class="form-control">
+          <input
+            type="text"
+            name="confirmPassword"
+            id="confirmPassword"
+            placeholder="Confirm Password"
+          />
+        </div>
+        <button class="mx-auto" type="submit">Signup</button>
+      </form>
+    </div>
+  </body>
+</html>

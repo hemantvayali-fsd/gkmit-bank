@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include('../partials/head') %>
+  </head>
+
+  <body>
+    <%- include('../partials/navigation') %>
+    <div class="cotainer">
+      <div class="jumbotron">
+        <h1>Dashboard</h1>
+      </div>
+    </div>
+
+    <div class="account-balance-summary">
+      <div class="card flex flex--between flex--lg-row">
+        <div style="font-size: 1.5em">
+          <span>Balance:</span>
+          <strong id="displayCurrBalance" style="display: none">
+            ₹ <%= user.balance.toFixed(2) %>
+          </strong>
+          <button id="enquireBalanceBtn" class="btn btn-outline-primary mx-1">
+            Enquire
+          </button>
+        </div>
+        <div>
+          <a
+            class="btn btn-success mx-2"
+            data-toggle="modal"
+            data-target="#depositModal"
+          >
+            Deposit
+          </a>
+          <a
+            class="btn btn-danger mx-2"
+            data-toggle="modal"
+            data-target="#withdrawModal"
+          >
+            Withdraw
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Trasaction Deposit Modal -->
+    <div
+      class="modal fade transactionModal"
+      id="depositModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="depositModal"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="depositModalTitle">Deposit Money</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form
+              id="depositForm"
+              class="flex flex--lg-row flex--vcenter flex--around my-2"
+            >
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="basic-addon1">₹</span>
+                </div>
+                <input
+                  id="amount"
+                  name="amount"
+                  type="number"
+                  class="form-control"
+                  placeholder="Amount"
+                  aria-label="deposit-amount"
+                  aria-describedby="deposit-amount"
+                />
+              </div>
+              <button
+                type="submit"
+                id="modal-submit-btn"
+                class="btn btn-primary"
+              >
+                Confirm
+              </button>
+            </form>
+            <span class="transaction-error-msg color-error">Error Message</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Trasaction Withdraw Modal -->
+    <div
+      class="modal fade transactionModal"
+      id="withdrawModal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="withdrawModal"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="depositModalTitle">Withdraw Money</h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form
+              id="withdrawForm"
+              class="flex flex--lg-row flex--vcenter flex--around my-2"
+            >
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="basic-addon1">₹</span>
+                </div>
+                <input
+                  id="amount"
+                  name="amount"
+                  type="number"
+                  class="form-control"
+                  placeholder="Amount"
+                  aria-label="withdraw-amount"
+                  aria-describedby="withdraw-amount"
+                />
+              </div>
+              <button
+                type="submit"
+                id="modal-submit-btn"
+                class="btn btn-primary"
+              >
+                Confirm
+              </button>
+            </form>
+            <span class="transaction-error-msg color-error">Error Message</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="loader-container">
+      <div class="loader">Loading...</div>
+    </div>
+    <!-- JQuery, Popper, Bootstrap -->
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+      integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+      integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- Custom JS -->
+    <script src="/js/transaction.js"></script>
+  </body>
+</html>

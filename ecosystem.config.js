@@ -45,7 +45,7 @@ module.exports = {
       // Can be multiple commands separated by the character ';'
       'pre-deploy-local': 'echo "This is a local executed command"',
       // Commands to be executed on the server after the repo has been cloned
-      'post-deploy': 'npm install && pm2 startOrRestart ecosystem.conf.js --env production',
+      'post-deploy': 'npm install && pm2 startOrRestart ecosystem.config.js --env production',
       // Environment variables that must be injected in all applications on this env
       env: {
         NODE_ENV: 'production'
@@ -58,7 +58,7 @@ module.exports = {
       repo: 'git@github.com:hemantvayali009/gkmit-bank.git',
       path: '/home/ubuntu/development',
       ssh_options: ['StrictHostKeyChecking=no', 'PasswordAuthentication=no'],
-      'post-deploy': 'pm2 startOrRestart ecosystem.conf.js --env dev',
+      'post-deploy': 'pm2 startOrRestart ecosystem.config.js --env dev',
       env: {
         NODE_ENV: 'staging'
       }
